@@ -118,21 +118,37 @@ class TestRegistration < Test::Unit::TestCase
     actual_text = @driver.find_element(:id, 'flash_notice').text
     assert(actual_text.include?(expected_text))
 
-    @driver.find_element(:css, '.issues.selected').click
-
-    expected_text = 'Bug'
-    actual_text = @driver.find_element(:css, ".tracker-1 .tracker").text
-    assert_equal(actual_text, expected_text)
-
-    expected_text = 'Feature'
-    actual_text = @driver.find_element(:css, ".tracker-2 .tracker").text
-    assert_equal(actual_text, expected_text)
-
-    expected_text = 'Support'
-    actual_text = @driver.find_element(:css, ".tracker-3 .tracker").text
-    assert_equal(actual_text, expected_text)
   end
 
+  def test_create_bug
+    register_user
+    create_project
+    create_bug
+    expected_text = @subject1.to_s
+    actual_text = @driver.find_element(:css, ".subject").text
+    assert_equal(actual_text, expected_text)
+
+  end
+
+  def test_create_feature
+    register_user
+    create_project
+    create_feature
+    expected_text = @subject2.to_s
+    actual_text = @driver.find_element(:css, ".subject").text
+    assert_equal(actual_text, expected_text)
+
+  end
+
+  def test_create_support
+    register_user
+    create_project
+    create_support
+    expected_text = @subject3.to_s
+    actual_text = @driver.find_element(:css, ".subject").text
+    assert_equal(actual_text, expected_text)
+
+  end
 
   def teardown
     @driver.quit
