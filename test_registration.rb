@@ -21,8 +21,8 @@ class TestRegistration < Test::Unit::TestCase
 
   def test_log_out
     register_user
+    logout_user
 
-    @driver.find_element(:class, 'logout').click
 
     @wait = Selenium::WebDriver::Wait.new(:timeout => 5)
 
@@ -36,8 +36,8 @@ class TestRegistration < Test::Unit::TestCase
 
     @driver.find_element(:class, 'my-account').click
 
-    @wait.until { @driver.find_element(:xpath, "//*[@id='content']/div[1]/a[2]").displayed? }
-    @driver.find_element(:xpath, "//*[@id='content']/div[1]/a[2]").click
+    @wait.until { @driver.find_element(:css, ".icon + *").displayed? }
+    @driver.find_element(:css, ".icon + *").click
 
     @wait.until { @driver.find_element(:id, "password").displayed? }
 
@@ -63,30 +63,24 @@ class TestRegistration < Test::Unit::TestCase
   end
 
   def test_adduser
-    register_user
-    create_project
     adduser
 
-    @wait.until { @driver.find_element(:css, '.even .name .user').displayed? }
-
-    expected_name = "Dave Hill"
-    actual_name = @driver.find_element(:css, '.even .name .user').text
-    assert_equal(expected_name, actual_name)
-
     expected_role = "Developer"
-    actual_role = @driver.find_element(:css, '.even span').text
+    actual_role = @driver.find_element(:css, ".even span").text
     assert_equal(expected_role, actual_role)
+
+    expected_name = 'Dave Hill'
+    actual_name = @driver.find_element(:css, ".even .name .user").text
+    assert_equal(expected_name, actual_name)
 
   end
 
   def test_edit_users_roles
-    register_user
-    create_project
     adduser
     edit_users_roles
 
     expected_roles = "Manager, Developer, Reporter"
-    actual_roles   = @driver.find_element(:css, ".odd span").text
+    actual_roles   = @driver.find_element(:css, ".even span").text
     assert_equal(expected_roles, actual_roles)
 
   end
