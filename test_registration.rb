@@ -69,8 +69,8 @@ class TestRegistration < Test::Unit::TestCase
     actual_role = @driver.find_element(:css, ".even span").text
     assert_equal(expected_role, actual_role)
 
-    expected_name = 'Dave Hill'
-    actual_name = @driver.find_element(:css, ".even .name .user").text
+    expected_name = @login.to_s + ' Hill'
+    actual_name = @driver.find_element(:css, ".odd .name .user").text
     assert_equal(expected_name, actual_name)
 
   end

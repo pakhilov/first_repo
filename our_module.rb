@@ -12,7 +12,7 @@ module OurModule
     @driver.find_element(:id, 'user_login').send_keys @login
     @driver.find_element(:id, 'user_password').send_keys 'kdkdkdkqwer'
     @driver.find_element(:id, 'user_password_confirmation').send_keys 'kdkdkdkqwer'
-    @driver.find_element(:id, 'user_firstname').send_keys 'Dave'
+    @driver.find_element(:id, 'user_firstname').send_keys @login
     @driver.find_element(:id, 'user_lastname').send_keys 'Hill'
     @driver.find_element(:id, 'user_mail').send_keys(@login + '@drv.er')
 
@@ -61,14 +61,29 @@ module OurModule
   end
 
   def edit_users_roles
-    @wait.until { @driver.find_element(:css, ".even .icon-edit").displayed? }
-    @driver.find_element(:css, ".even .icon-edit").click
 
-    @wait.until { @driver.find_element(:css, ".even input[value='3']").displayed? }
 
-    @driver.find_element(:css, ".even input[value='3']").click
-    @driver.find_element(:css, ".even input[value='5']").click
-    @driver.find_element(:css, ".even .small").click
+    var = @driver.find_elements(css:".members .name").select {|el| el.text.include? @testuser}.first
+    index = @driver.find_elements(css:".members .name").index(var)
+
+    button_edit = @driver.find_elements(class:"icon-edit")[index]
+
+    button_edit.click
+
+
+    button_input3 = @driver.find_elements(:css, ".roles input[value='3']")[index]
+    button_input3.click
+
+    button_input5 = @driver.find_elements(:css, ".roles input[value='5']")[index]
+    button_input5.click
+
+    button_save = @driver.find_elements(:css, ".roles .small")[index]
+    button_save.click
+
+
+   #  .roles .small
+
+   # @driver.find_element(:css, ".even .small").click
 
     @wait.until { @driver.find_element(:css, "tr[class='even member'] span").displayed? }
 
